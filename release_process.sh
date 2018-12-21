@@ -57,6 +57,7 @@ function validatePomExists() {
 }
 
 function validatePom() {
+  cd ${CURRENT_DIRECTORY}
   ${MAVEN_BIN} validate
   STATUS=`echo $?`
   if [ ${STATUS} -ne 0 ] ; then
