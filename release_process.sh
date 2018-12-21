@@ -8,6 +8,17 @@
 # 1.0.0-SNAPSHOT --> 1.1.0-SNAPSHOT
 #################################################################################
 
+# Check if a new release branch is created
+TEMP_FILE=`git pull >& temp.txt`
+RELEASE_BRANCH_NAME=`cat test.txt | sed -n '2p' | awk '{print $6}' | cut -d/ -f2`
+# NEW_RELEASE_BRANCH=`cat temp.txt | sed -n '2p' | awk '{print $2,$3}'`
+if [ ! -z "${RELEASE_BRANCH_NAME}" ] ; then
+    git checkout develop
+else
+   exit 0
+fi
+    
+
 MAVEN_BIN=`which mvn`
 
 MAVEN_VERSIONS_PLUGIN="org.codehaus.mojo:versions-maven-plugin:1.3.1"
@@ -21,8 +32,6 @@ MAVEN_HELP_PLUGIN_EVALUATE_VERSION_GOAL="${MAVEN_HELP_PLUGIN}:evaluate -Dexpress
 DRY_RUN=false
 ALLOW_OUTSIDE_JENKINS=false
 SKIP_BRANCH_SWITCH=false
-
-LAST_COMMIT_HASH=`git log -1 --pretty=format:"%H"`
 
 function validateCIServerRun() {
   IS_JENKINS_SERVER=false
@@ -41,7 +50,6 @@ function validatePomExists() {
   CURRENT_DIRECTORY=`pwd`
   if [ -f pom.xml ] ; then
     echo "Found pom.xml file: [${CURRENT_DIRECTORY}/pom.xml]"
-    cp ${CURRENT_DIRECTORY}/pom.xml ${CURRENT_DIRECTORY}/pom.xml_`date +%Y-%m-%d.%H:%M:%S`
   else
     echo "ERROR: No pom.xml file detected in current directory [${CURRENT_DIRECTORY}]. Exiting script with error status."
     exit 50
@@ -120,11 +128,10 @@ function commitBuildNumberChanges() {
 # Make sure that there's a pom that we can do anything with.
 validatePomExists
 
-LAST_COMMIT_BRANCH="master"
-
 #################################################################################
 # Update the project POMs with the new build number.
 #################################################################################
+
 initCurrentProjectVersion
 
 initNextProjectVersion
