@@ -7,6 +7,19 @@
 # (existing --> after script run):
 # 1.0.0-SNAPSHOT --> 1.1.0-SNAPSHOT
 #################################################################################
+CHECK_RELEASE_EXISTANCE=$(git pull 2>&1 | sed -n '2p')
+RELEASE_BRANCH_NAME=`echo $CHECK_RELEASE_EXISTANCE | cut -d/ -f2`
+echo $CHECK_RELEASE_EXISTANCE
+echo $RELEASE_BRANCH_NAME
+
+if [[ "$CHECK_RELEASE_EXISTANCE" =~ "release-" ]] ; then
+   echo "Release branch name: $RELEASE_BRANCH_NAME"
+   continue
+else
+   echo "No new release branch"
+   exit 0
+fi
+
 
 MAVEN_BIN=`which mvn`
 
