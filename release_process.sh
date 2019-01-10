@@ -122,7 +122,7 @@ function commitBuildNumberChanges() {
   git commit -m "${BUILD_NUMBER_CHANGES_COMMIT_MESSAGE}"
 
   echo "Pushing changes to origin..."
-  git push origin
+  git push
 }
 
 # Make sure that there's a pom that we can do anything with.
