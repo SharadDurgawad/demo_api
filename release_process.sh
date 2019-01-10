@@ -10,7 +10,7 @@
 
 # Check if a new release branch is created from develop
 TEMP_FILE=`git pull >& temp.txt`
-RELEASE_BRANCH_NAME=`cat test.txt | sed -n '2p' | awk '{print $6}' | cut -d/ -f2`
+RELEASE_BRANCH_NAME=`cat temp.txt | sed -n '2p' | awk '{print $6}' | cut -d/ -f2`
 # NEW_RELEASE_BRANCH=`cat temp.txt | sed -n '2p' | awk '{print $2,$3}'`
 if [ ! -z "${RELEASE_BRANCH_NAME}" ] ; then
     git checkout develop
