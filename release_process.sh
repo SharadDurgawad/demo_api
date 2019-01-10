@@ -29,7 +29,6 @@ MAVEN_VERSIONS_PLUGIN_UPDATE_DEPENDENCIES_GOAL="${MAVEN_VERSIONS_PLUGIN}:use-lat
 MAVEN_HELP_PLUGIN="org.apache.maven.plugins:maven-help-plugin:2.1.1"
 MAVEN_HELP_PLUGIN_EVALUATE_VERSION_GOAL="${MAVEN_HELP_PLUGIN}:evaluate -Dexpression=project.version"
 
-DRY_RUN=false
 ALLOW_OUTSIDE_JENKINS=false
 SKIP_BRANCH_SWITCH=false
 
@@ -138,18 +137,7 @@ initNextProjectVersion
 
 updateProjectPomsToNextVersion
 
+commitBuildNumberChanges
+
 # updateToLatestParentPom
-
-exit 0
-
-#################################################################################
-# Commit/Push updated files up to the repository
-#################################################################################
-if [ ${DRY_RUN} = false ] ; then
-  commitBuildNumberChanges
-else
-  echo "Dry run specified. Skipping commit/push process."
-fi
-
-echo "Version updated successfully!"
 
